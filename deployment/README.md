@@ -117,4 +117,5 @@ Then resources which are not created by cdk, need to manually clean it up. Like 
 | In China the LLM model is too slow for deployment  due to network issue         | Under the Jupyter notebook LLM_Model folder, there's "code" and requirements.txt file, add China source for the dependency lib, e.g. put "-i https://pypi.tuna.tsinghua.edu.cn/simple" in the first line of the requirements.txt file                                |
 | CORS error for China API Gateway endpoint accessing | Need to contact responsible AWS account team to query about how to open the 443/80/8080 port by legal requirement |
 
-
+### Extensions
+- [ASR (Automatic Speech Recognition)](./README-ASR.md)

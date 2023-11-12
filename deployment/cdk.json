@@ -45,11 +45,11 @@
       "langchain_processor_qa"
     ],
     "extension": [
-      "nobot"   
+      "nobot"
     ],
     "notebook_deployment": true,
-    "search_engine_opensearch":true,
-    "search_engine_kendra":false,
+    "search_engine_opensearch": true,
+    "search_engine_kendra": false,
     "execution_role_name": "custom-role-document-ai-upload-to-s3",
     "table_name": "FeedbackRecordsSEWCFAQ",
     "apigateway_name": "intelligent-search-file-management",
@@ -57,10 +57,15 @@
     "embedding_endpoint_name": "huggingface-inference-eb",
     "llm_endpoint_name": "pytorch-inference-llm-v1",
     "language": "chinese",
-    "model_type":"other",
+    "model_type": "other",
     "enable_content_moderation": false,
     "content_moderation_api_cn": "https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text",
-    "content_moderation_api": "https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text"
+    "content_moderation_api": "https://gtf.ai.xingzheai.cn/v2.0/game_chat_ban/detect_text",
+    "enable_asr_model_feature": true,
+    "asr_model_server_disk_size": 100,
+    "asr_content_table_name": "ASR_Content",
+    "asr_content_processor_func_name": "asr_content_processor",
+    "turn_on_email_notification": "true"
   }
 }
 
