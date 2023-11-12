@@ -6,7 +6,7 @@ import os
 client = boto3.client('ses')
 lam = boto3.client('lambda')
 turn_on_email_notification = os.environ['turn_on_email_notification']
-
+source_sender = os.environ['source_sender']
 
 def send_email(content, recipients):
     response = client.send_email(
@@ -33,7 +33,7 @@ def send_email(content, recipients):
                 'Data': '[Notification] Meeting Minutes Summary',
             },
         },
-        Source='vwmc@amazon.com'
+        Source=source_sender
     )
 
     print(response)

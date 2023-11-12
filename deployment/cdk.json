@@ -65,7 +65,8 @@
     "asr_model_server_disk_size": 100,
     "asr_content_table_name": "ASR_Content",
     "asr_content_processor_func_name": "asr_content_processor",
-    "turn_on_email_notification": "true"
+    "turn_on_email_notification": "true",
+    "source_sender": "vwmc@amazon.com"
   }
 }
 

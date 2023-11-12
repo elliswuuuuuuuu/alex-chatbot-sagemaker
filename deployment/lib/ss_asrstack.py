@@ -228,6 +228,7 @@ class ASRStack(Stack):
     def provision_asr_stream_processor(self):
         asr_content_processor_func_name = self.node.try_get_context("asr_content_processor_func_name")
         turn_on_email_notification = self.node.try_get_context("turn_on_email_notification")
+        source_sender = self.node.try_get_context("source_sender")
 
         asr_stream_processor_policy = iam.PolicyStatement(
             actions=[
@@ -271,6 +272,8 @@ class ASRStack(Stack):
         )
         asr_stream_processor_func.add_environment("asr_content_processor_func_name", asr_content_processor_func_name)
         asr_stream_processor_func.add_environment("turn_on_email_notification", turn_on_email_notification)
+        asr_stream_processor_func.add_environment("source_sender", source_sender)
+
 
         # Add DynamoDB Stream to ASR_Stream_Processor
         asr_stream_processor_func.add_event_source(DynamoEventSource(self.asr_content_table,

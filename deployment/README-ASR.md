@@ -50,9 +50,11 @@ In this section, you will learn how to deploy an ASR stack with UI and backend s
    ```json
    "enable_asr_model_feature": true,
    ```
-   Turn on `turn_on_email_notification` set to `true`, if __SES__ properly setup. Otherwise please keep it as `false`
+   Turn on `turn_on_email_notification` set to `true`, if __SES__ properly setup. Otherwise please keep it as `false`.
+   Update the `source_sender` to email you verified from SES.
    ```json
-   "turn_on_email_notification": "false"
+   "turn_on_email_notification": "false",
+   "source_sender": "<your SES verified email>"
    ```
 2. Run same command to synth and deploy.
    ```shell
