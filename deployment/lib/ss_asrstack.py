@@ -289,7 +289,7 @@ class ASRStack(Stack):
     """
 
     def provision_asr_content_processor(self):
-        llm_embedding_name = self.node.try_get_context("llm_embedding_name")
+        llm_endpoint_name = self.node.try_get_context("llm_endpoint_name")
         asr_content_table = self.node.try_get_context("asr_content_table_name")
         asr_func_name = self.node.try_get_context("asr_content_processor_func_name")
 
@@ -333,4 +333,4 @@ class ASRStack(Stack):
             reserved_concurrent_executions=10
         )
         asr_content_processor_func.add_environment("asr_content_table", asr_content_table)
-        asr_content_processor_func.add_environment("llm_embedding_name", llm_embedding_name)
+        asr_content_processor_func.add_environment("llm_endpoint_name", llm_endpoint_name)
