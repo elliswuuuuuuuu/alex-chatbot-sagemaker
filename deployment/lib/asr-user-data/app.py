@@ -66,7 +66,7 @@ def transcribe():
 
     print(f"local_file_path is : {local_file_path}")
 
-    model_size = "large-v2"
+    model_size = "large-v3"
 
     # Run on GPU with FP16
     model = WhisperModel(model_size, device="cuda", compute_type="float16")

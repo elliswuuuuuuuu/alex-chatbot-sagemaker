@@ -26,6 +26,10 @@
       "name": "large-v2",
       "url": "large-v2"
     },
+    {
+      "name": "large-v3",
+      "url": "large-v3"
+    },
     // Uncomment to add custom Japanese models
     // NOTE: For Faster-Whisper, the models must be converted to the CTranslate2 format,
     //       see https://github.com/guillaumekln/faster-whisper#model-conversion
@@ -69,7 +73,7 @@
   // or whisper (requirements.txt)
   "whisper_implementation": "faster-whisper",
   // The default model name.
-  "default_model_name": "large-v2",
+  "default_model_name": "large-v3",
   // The default VAD.
   "default_vad": "silero-vad",
   // A commma delimited list of CUDA devices to use for parallel processing. If None, disable parallel processing.

@@ -174,8 +174,10 @@ class ASRStack(Stack):
                                     targets=[asg]
                                     )
 
-        cdk.CfnOutput(self, 'api_alb_endpoint', value=f"http://{api_alb.load_balancer_dns_name}", export_name='API-ALB-Endpoint')
-        cdk.CfnOutput(self, 'asr_ui_alb_endpoint', value=f"http://{asr_ui_alb.load_balancer_dns_name}", export_name='ASR-UI-ALB-Endpoint')
+        cdk.CfnOutput(self, 'api_alb_endpoint', value=f"http://{api_alb.load_balancer_dns_name}",
+                      export_name='API-ALB-Endpoint')
+        cdk.CfnOutput(self, 'asr_ui_alb_endpoint', value=f"http://{asr_ui_alb.load_balancer_dns_name}",
+                      export_name='ASR-UI-ALB-Endpoint')
 
     """
         Provision DynamoDB table for storing ASR text 
@@ -273,7 +275,6 @@ class ASRStack(Stack):
         asr_stream_processor_func.add_environment("asr_content_processor_func_name", asr_content_processor_func_name)
         asr_stream_processor_func.add_environment("turn_on_email_notification", turn_on_email_notification)
         asr_stream_processor_func.add_environment("source_sender", source_sender)
-
 
         # Add DynamoDB Stream to ASR_Stream_Processor
         asr_stream_processor_func.add_event_source(DynamoEventSource(self.asr_content_table,

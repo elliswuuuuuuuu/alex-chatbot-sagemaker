@@ -4,7 +4,7 @@
 #
 # This script acts as start-up script when EC2 spins up.
 #
-# Faster-whisper model will be downloaded to ~/.cache/huggingface/hub/models--guillaumekln--faster-whisper-large-v2/, when it
+# Faster-whisper model will be downloaded to ~/.cache/huggingface/hub/models--Systran--faster-whisper-large-v3/, when it
 # firstly being invoked.
 #
 ################################################################################################################################
@@ -36,7 +36,7 @@ pip install flask boto3 requests flask_cors nvidia-cublas-cu11 nvidia-cudnn-cu11
 # Download model directly from HuggingFace, for CN, need to change to 
 cat > /asr/download_model.py <<EOF
 import huggingface_hub
-huggingface_hub.snapshot_download('guillaumekln/faster-whisper-large-v2')
+huggingface_hub.snapshot_download('Systran/faster-whisper-large-v3')
 EOF
 
 python3 /asr/download_model.py
@@ -107,33 +107,7 @@ def transcribe():
     
     print(f"local_file_path is : {local_file_path}")
     
-    # import subprocess
-
-    # process = subprocess.Popen(["/asr/invoke.sh", f"{local_file_path}"],
-    #                               stdout=subprocess.PIPE,
-    #                               stderr=subprocess.PIPE,
-    #                               text=True
-    #                               )
-    # print("Start to transcribe, please wait...")
-    # process.communicate()
-    # process.wait()
-    # print("Completed transcription.")
-
-    # # Read output from output_dir
-    # try:
-        
-    #     with open(f"/asr/output_dir/{audio_name}_{uuid_str}-transcript.txt") as f:
-    #         transcription_result = f.read()
-        
-    #     print(f"Transcription: {transcription_result}")
-    #     return transcription_result
-        
-    # except Exception as e:
-    #     print('Unable to find the output')
-    #     print(f'Error occured: {e}')
-    #     return 'Unable to find the output'
-    
-    model_size = "large-v2"
+    model_size = "large-v3"
 
     # Run on GPU with FP16
     model = WhisperModel(model_size, device="cuda", compute_type="float16")

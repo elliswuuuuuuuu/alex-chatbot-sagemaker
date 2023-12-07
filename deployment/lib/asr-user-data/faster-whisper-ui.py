@@ -59,7 +59,7 @@ MAX_FILE_PREFIX_LENGTH = 17
 # Limit auto_parallel to a certain number of CPUs (specify vad_cpu_cores to get a higher number)
 MAX_AUTO_CPU_CORES = 8
 
-WHISPER_MODELS = ["large-v1", "large-v2"]
+WHISPER_MODELS = ["large-v2", "large-v3"]
 
 
 class VadOptions:
@@ -688,7 +688,7 @@ if __name__ == '__main__':
                         help="The port to bind to.")  # 7860
     parser.add_argument("--queue_concurrency_count", type=int, default=default_app_config.queue_concurrency_count, \
                         help="The number of concurrent requests to process.")  # 1
-    parser.add_argument("--default_model_name", type=str, choices=whisper_models, default="large-v2",
+    parser.add_argument("--default_model_name", type=str, choices=whisper_models, default="large-v3",
                         # default_app_config.default_model_name, \
                         help="The default model name.")  # medium
     parser.add_argument("--default_vad", type=str, default=default_app_config.default_vad, \
