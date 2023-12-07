@@ -21,6 +21,7 @@ from aws_cdk import (
 dirname = os.path.dirname(__file__)
 
 # Read content from script
+user_data_script_content = ""
 with open(f"{dirname}/asr-user-data/init.sh") as f:
     user_data_script_content = f.read()
 
@@ -35,8 +36,8 @@ class ASRStack(Stack):
         self.asr_content_table = None
         self.asr_content_table_name = self.node.try_get_context("asr_content_table_name")
 
-        self.provision_asr_server()
-        self.provision_dynamodb()
+        self.provision_asr_server(scope, id, **kwargs)
+        self.provision_dynamodb(scope, id, **kwargs)
 
         self.asr_content_layer = _lambda.LayerVersion(
             self, 'ASR_Content_layer',
@@ -45,8 +46,8 @@ class ASRStack(Stack):
             description='ASR_Content_layer'
         )
 
-        self.provision_asr_stream_processor()
-        self.provision_asr_content_processor()
+        self.provision_asr_stream_processor(scope, id, **kwargs)
+        self.provision_asr_content_processor(scope, id, **kwargs)
 
     """
         Upload custom whisper ui to Sagemaer default bucket.
@@ -71,7 +72,7 @@ class ASRStack(Stack):
         Provision ASR Server, along with VPC and LB
     """
 
-    def provision_asr_server(self):
+    def provision_asr_server(self, scope: Construct, id: str, **kwargs):
         # VPC
         vpc = ec2.Vpc(self, "asr_vpc",
                       ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/21"),
@@ -123,6 +124,7 @@ class ASRStack(Stack):
                                ],
                                associate_public_ip_address=True,
                                user_data=ec2.UserData.custom(user_data_script_content)
+                               # Fn.base64(user_data_script_content),
                                )
 
         Tags.of(asg).add('asr_content_table', self.asr_content_table_name);
@@ -136,17 +138,18 @@ class ASRStack(Stack):
                                                 idle_timeout=Duration.seconds(4000),  # timeout set to 4000s
                                                 )
 
-        # Add a listener and open up the load balancer security group to the world.
+        # Add a listener and open up the load balancer's security group
+        # to the world.
         api_listener = api_alb.add_listener("Listener",
                                             port=80,
-
                                             # 'open: true' is the default, you can leave it out if you want. Set it
                                             # to 'false' and use `listener.connections` if you want to be selective
                                             # about who can access the load balancer.
                                             open=True
                                             )
 
-        # Create an AutoScaling group and add it as a load balancing target to the listener.
+        # Create an AutoScaling group and add it as a load balancing
+        # target to the listener.
         api_listener.add_targets("ApplicationFleet",
                                  protocol=elbv2.ApplicationProtocol.HTTP,
                                  port=5000,
@@ -183,7 +186,7 @@ class ASRStack(Stack):
         Provision DynamoDB table for storing ASR text 
     """
 
-    def provision_dynamodb(self):
+    def provision_dynamodb(self, scope: Construct, id: str, **kwargs):
         # Create DynamoDB
         asr_content_table = dynamodb.Table(
             self,
@@ -227,10 +230,9 @@ class ASRStack(Stack):
         - UPDATE record - when summary is ready, trigger EMAIL sending.
     """
 
-    def provision_asr_stream_processor(self):
+    def provision_asr_stream_processor(self, scope: Construct, id: str, **kwargs):
         asr_content_processor_func_name = self.node.try_get_context("asr_content_processor_func_name")
         turn_on_email_notification = self.node.try_get_context("turn_on_email_notification")
-        source_sender = self.node.try_get_context("source_sender")
 
         asr_stream_processor_policy = iam.PolicyStatement(
             actions=[
@@ -274,7 +276,6 @@ class ASRStack(Stack):
         )
         asr_stream_processor_func.add_environment("asr_content_processor_func_name", asr_content_processor_func_name)
         asr_stream_processor_func.add_environment("turn_on_email_notification", turn_on_email_notification)
-        asr_stream_processor_func.add_environment("source_sender", source_sender)
 
         # Add DynamoDB Stream to ASR_Stream_Processor
         asr_stream_processor_func.add_event_source(DynamoEventSource(self.asr_content_table,
@@ -289,8 +290,8 @@ class ASRStack(Stack):
         This function will majorly pass data to LLM and save summary to DynamoDB.
     """
 
-    def provision_asr_content_processor(self):
-        llm_endpoint_name = self.node.try_get_context("llm_endpoint_name")
+    def provision_asr_content_processor(self, scope: Construct, id: str, **kwargs):
+        llm_embedding_name = self.node.try_get_context("llm_embedding_name")
         asr_content_table = self.node.try_get_context("asr_content_table_name")
         asr_func_name = self.node.try_get_context("asr_content_processor_func_name")
 
@@ -334,4 +335,4 @@ class ASRStack(Stack):
             reserved_concurrent_executions=10
         )
         asr_content_processor_func.add_environment("asr_content_table", asr_content_table)
-        asr_content_processor_func.add_environment("llm_endpoint_name", llm_endpoint_name)
+        asr_content_processor_func.add_environment("llm_embedding_name", llm_embedding_name)

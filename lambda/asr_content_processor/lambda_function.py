@@ -1,28 +1,6 @@
-from langchain.chains.question_answering import load_qa_chain
-from langchain.document_loaders import TextLoader
-from langchain.document_loaders import UnstructuredMarkdownLoader
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders import Docx2txtLoader
-from langchain.document_loaders import UnstructuredPowerPointLoader
-from langchain.document_loaders import UnstructuredHTMLLoader
-from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain.prompts import PromptTemplate
-from langchain.prompts.prompt import PromptTemplate
-from langchain.embeddings import SagemakerEndpointEmbeddings
-from langchain.embeddings.sagemaker_endpoint import EmbeddingsContentHandler
-from langchain.vectorstores import OpenSearchVectorSearch
-from langchain.docstore.document import Document
-from langchain.text_splitter import NLTKTextSplitter
-from langchain.text_splitter import CharacterTextSplitter
-import langchain.llms.SagemakerEndpoint
-from langchain.llms.sagemaker_endpoint import ContentHandlerBase
+from langchain import SagemakerEndpoint
 from langchain.llms.sagemaker_endpoint import LLMContentHandler
-from langchain.chains.summarize import load_summarize_chain
-from langchain.memory import ConversationBufferMemory
-from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from typing import Dict, List, Tuple
+from typing import Dict
 from datetime import datetime
 import boto3
 import json
@@ -121,7 +99,7 @@ class LongTextProcessor:
 
 
 def init_model(endpoint_name: str = "pytorch-inference-llm-v1",
-               region_name: str = os.environ['AWS_REGION'],
+               region_name: str = 'us-west-2',  # os.environ['AWS_REGION'],
                temperature: float = 0):
     try:
         class ContentHandler(LLMContentHandler):

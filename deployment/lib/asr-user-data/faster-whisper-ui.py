@@ -1,16 +1,10 @@
-from datetime import datetime
-import json
 import math
 from typing import Callable, Iterator, Union
 import argparse
 
 from io import StringIO
-import os
-import pathlib
 import tempfile
 import zipfile
-import numpy as np
-
 import torch
 
 from src.config import VAD_INITIAL_PROMPT_MODE_VALUES, ApplicationConfig, VadInitialPromptMode
