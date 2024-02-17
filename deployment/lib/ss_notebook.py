@@ -167,7 +167,7 @@ class NotebookStack(cdk.Stack):
                 content=cdk.Fn.base64(f"""
                     #!/bin/bash
                     cd home/ec2-user/SageMaker
-                    git clone -b jupyter --single-branch https://github.com/aws-solutions-library-samples/guidance-for-custom-search-of-an-enterprise-knowledge-base-on-aws.git
+                    git clone -b jupyter --single-branch https://github.com/elliswuuuuuuuu/alex-chatbot-sagemaker.git
                     chmod -R 777 ./
 
                 """)
@@ -178,7 +178,6 @@ class NotebookStack(cdk.Stack):
         role_arn=self.notebook_job_role.role_arn,
         instance_type="ml.m5.xlarge",
         lifecycle_config_name='ss-config',
-        # default_code_repository="https://github.com/aws-solutions-library-samples/guidance-for-custom-search-of-an-enterprise-knowledge-base-on-aws.git",
         volume_size_in_gb=80)
 
 
