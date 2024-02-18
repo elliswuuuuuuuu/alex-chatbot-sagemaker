@@ -49,7 +49,7 @@ class NotebookStack(cdk.Stack):
         )                                                      
         # set role for sagemaker notebook       
         self.notebook_job_role =  _iam.Role(
-            self,'SmartSearchNotebookRole',
+            self, 'SmartSearchNotebookRole',
             assumed_by=_iam.ServicePrincipal('sagemaker.amazonaws.com'),
             description =' IAM role for notebook job',
         )

@@ -37,13 +37,13 @@ def lambda_handler(event, context):
     if 'queryStringParameters' in event.keys():
         evt_para = event['queryStringParameters']
     
-    requestType = 'websocket'
+    requestType = ''
     if isinstance(evt_para,dict) and "requestType" in evt_para.keys():
         requestType = evt_para['requestType']
         
     evt_body = {}
     if 'body' in event.keys() and requestType == 'websocket':
-        if event['body'] != 'None':
+        if event['body'] != 'None' or event['body'] is not None:
             evt_body = json.loads(event['body'])
     else:
         evt_body = evt_para   
@@ -78,9 +78,9 @@ def lambda_handler(event, context):
         language = evt_body['language']
 
     sessionId=""
-    if "sessionId" in evt_body.keys():
-        sessionId = str(evt_body['sessionId'])
-    print('sessionId:',sessionId)
+    if "session_id" in evt_body.keys():
+        sessionId = str(evt_body['session_id'])
+    print('session_id:',sessionId)
     
     sessionTemplateId=""
     if "sessionTemplateId" in evt_body.keys():
@@ -98,11 +98,13 @@ def lambda_handler(event, context):
 
     embeddingEndpoint = EMBEDDING_ENDPOINT_NAME
     sagemakerEndpoint = LLM_ENDPOINT_NAME
-    if "embeddingEndpoint" in evt_body.keys():
-        embeddingEndpoint = evt_body['embeddingEndpoint']
+    if "embedding_endpoint_name" in evt_body.keys():
+        embeddingEndpoint = evt_body['embedding_endpoint_name']
+    print("embeddingEndpoint:", embeddingEndpoint)
         
-    if "sagemakerEndpoint" in evt_body.keys():
-        sagemakerEndpoint = evt_body['sagemakerEndpoint']
+    if "llm_endpoint_name" in evt_body.keys():
+        sagemakerEndpoint = evt_body['llm_endpoint_name']
+    print("sagemakerEndpoint:", sagemakerEndpoint)
     
     modelType = 'normal'
     if "modelType" in evt_body.keys():
@@ -221,7 +223,7 @@ def lambda_handler(event, context):
             else:
                 result = search_qa.get_chat(query,language,prompt_template,table_name,sessionId,modelType)
             
-            # print('chat result:',result)
+            print('chat result:',result)
             
             response['body'] = json.dumps(
             {

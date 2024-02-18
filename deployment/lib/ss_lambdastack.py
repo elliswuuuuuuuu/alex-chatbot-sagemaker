@@ -129,10 +129,6 @@ class LambdaStack(Stack):
             
         # api gateway resource
         api = apigw.RestApi(self, 'smartsearch-api',
-                            # default_cors_preflight_options=apigw.CorsOptions(
-                            #     allow_origins=apigw.Cors.ALL_ORIGINS,
-                            #     allow_methods=apigw.Cors.ALL_METHODS
-                            # ),
                             endpoint_types=[apigw.EndpointType.REGIONAL],
                             binary_media_types=binary_media_types
                             )

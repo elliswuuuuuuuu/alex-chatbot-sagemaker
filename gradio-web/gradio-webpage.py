@@ -4,10 +4,11 @@ import gradio as gr
 from datetime import datetime
 
 #Fill in your configuration
-invoke_url = ''
-bedrock_url = ''
+invoke_url = 'https://4qp53npsp9.execute-api.us-east-1.amazonaws.com/prod'
+bedrock_url = 'https://iwp4296242.execute-api.us-east-1.amazonaws.com/prod/'
 
-chinese_index = 'smart_search_qa_test'
+#chinese_index = 'smart_search_qa_test'
+chinese_index = 'source_data'
 english_index = 'smart_search_qa_test'
 
 cn_embedding_endpoint = 'huggingface-inference-eb'

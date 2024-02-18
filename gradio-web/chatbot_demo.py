@@ -8,10 +8,11 @@ import boto3
 import pandas as pd
 
 
-invoke_url = ''
+invoke_url = 'https://4qp53npsp9.execute-api.us-east-1.amazonaws.com/prod'
 api = invoke_url + '/langchain_processor_qa?query='
 
-chinese_index = "smart_search_qa_test"
+#chinese_index = "smart_search_qa_test"
+chinese_index = "source_data"
 english_index = "smart_search_qa_test_en"
 
 cn_embedding_endpoint = 'huggingface-inference-eb'
@@ -75,23 +76,24 @@ def generate_response(prompt):
     if language == "english":
         url += '&language=english'
         url += ('&embedding_endpoint_name='+en_embedding_endpoint)
-        url += ('&llm_embedding_name='+en_llm_endpoint)
+        url += ('&llm_endpoint_name='+en_llm_endpoint)
         url += ('&index='+english_index)
     elif language == "chinese":
         url += '&language=chinese'
         url += ('&embedding_endpoint_name='+cn_embedding_endpoint)
-        url += ('&llm_embedding_name='+cn_llm_endpoint)
+        url += ('&llm_endpoint_name='+cn_llm_endpoint)
         url += ('&index='+chinese_index)
     elif language == "chinese-tc":
         url += '&language=chinese-tc'
         url += ('&embedding_endpoint_name='+cn_embedding_endpoint)
-        url += ('&llm_embedding_name='+cn_llm_endpoint)
+        url += ('&llm_endpoint_name='+cn_llm_endpoint)
  
     print('url:',url)
     response = requests.get(url)
     result = response.text
     result = json.loads(result)
-    answer = result['suggestion_answer']
+    print('result:', result)
+    answer = result['text']
     
     return answer
 
